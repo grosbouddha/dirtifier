@@ -1,0 +1,37 @@
+html, body{
+	background-color: yellow;
+    max-width:100%;
+    max-height:100%;
+    overflow:hidden;
+}
+
+.viewport-wrapper.ui-content {
+	padding: 0;
+	text-align: center;
+}
+
+.viewport {
+	display: inline-block;
+	background-color: green;
+    position: relative;
+}
+
+.target-img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+.target-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.pixel-mask-overlay {
+	z-index: 1;
+}
+
+.interaction-overlay {
+	z-index: 2;
+	opacity: .3;
+}
