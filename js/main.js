@@ -1,10 +1,21 @@
+var viewport = {
+    width  : $(window).width(),
+    height : $(window).height()
+};
+
 var img,
 	imgHeight,
 	imgWidth,
 	interactionLayerCanvas,
 	pixelOverlayCanvas,
-	cellPixelWidth = 15,
+	drawingLineWidth = 10,
+	// around 15px cell for a 768px wide nexus7 
+	cellPixelWidth = Math.floor(viewport.width / 50),
 	normalizationFactor = 3;
+
+
+
+//alert('viewport.width' + viewport.width + ' - viewport.height:' + viewport.height)
 
 $(document).bind('pageinit', function() {	
 	
@@ -28,9 +39,11 @@ $(document).bind('pageinit', function() {
 		interactionLayerCanvas.setAttribute('width', imgWidth);
 		attachDrawerListener($(interactionLayerCanvas));
 	});	
+	/*
 	$("#nudifier").bind('touch click', function() {
 		updatePixelization();
 	});
+	*/
 });
 
 var pixelize = function() {
@@ -48,7 +61,7 @@ var palettes = {
 			"245,228,213",
 			"250,241,232"
 		],
-		'desc' : 'light pink skin/flesh colors'
+		'desc': 'light pink skin/flesh colors'
 	}
 };
 
@@ -145,7 +158,7 @@ var turnPixelsToFlesh = function(macroPixels) {
 		var paletteColorIndex = Math.floor(Math.random() * palettes['light_pink'].colors.length);
 		var currentColor = palettes['light_pink']['colors'][paletteColorIndex];
 		ctx.fillStyle = "rgba(" + currentColor + ", " + pixel.fillRatio + ")";
-		console.log("rgba(255, 165, 0, " + pixel.fillRatio + ")");
+		//console.log("rgba(255, 165, 0, " + pixel.fillRatio + ")");
 		ctx.fillRect(
 			pixel.col * cellPixelWidth,
 			pixel.row * cellPixelWidth,
@@ -208,13 +221,9 @@ var processData_simple = function(pixelOverlayCanvas) {
 					}
 				}
 			}
-
-
 		}
-
 	}
 	ctx.putImageData(pixelInfo, 0, 0);
-
 	return palette;
 };
 
@@ -222,7 +231,7 @@ var processData_simple = function(pixelOverlayCanvas) {
 var attachDrawerListener = function(canvas) {
 	var canvasElt = canvas[0];
 	var ctx = canvasElt.getContext('2d');
-	ctx.lineWidth = 8;
+	ctx.lineWidth = drawingLineWidth;
 	ctx.strokeStyle = "pink";
 	ctx.fillStyle = "pink";
 	var previousClick = null;
@@ -271,5 +280,6 @@ var attachDrawerListener = function(canvas) {
 		//console.log('touchend')
 		canvas.unbind(move, onMove_);
 		previousClick = null;
+		updatePixelization();
 	});
 };
